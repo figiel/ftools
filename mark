@@ -1,13 +1,47 @@
 #!/usr/bin/perl
 
-# mark
-# by figiel.
+# mark - Minimalistic path bookmarks for Bourne shell
 
-# use with bash.
+# author: Piotr Figiel <figiel+github@gmail.com>.
+# This work is licensed under a Creative Commons Attribution 3.0 Unported
+# License.  http://creativecommons.org/licenses/by/3.0/deed.en_US
 #
-# setup a function first (add below to bashrc):
+
+# Setup (valid for bash):
+#
+# 1. Make `mark` available in path, e.g. put it to ~/bin
+# 2. Add following line to your ~/.bashrc file (omit #)
 #
 # go() { cd `mark get $*`; }
+#
+
+# Usage (basic):
+#
+# mark <name>     - creates or updates bookmark for current directory
+# go <name>       - changes the current directory to bookmarked one
+#
+
+# Usage (advanced):
+#
+# mark get <name>   - returns the path saved under bookmark
+# mark set <name>   - creates or updates bookmark
+# mark clear <name> - deletes the bookmark
+# mark list         - prints list of all saved bookmarks
+#
+
+# Example:
+#
+# user@mamba ~/github/ftools $ mark test
+# user@mamba ~/github/ftools $ cd
+# user@mamba ~ $ go test
+# user@mamba ~/github/ftools $ 
+#
+
+# Hints:
+# 
+# - bookmarks are stored persistently in your ~/.mark.db
+# - you don't have to provide full name of the bookmark when using 'go', first
+#   few letters are fine
 #
 
 use Cwd;
