@@ -9,15 +9,11 @@
 #
 # go() { cd `mark get $*`; }
 #
-# requires libdbm-deep-perl
-#
 
-use lib $ENV{'HOME'} . "/perl5";
-
-use DBM::Deep;
 use Cwd;
 
-my $db   = DBM::Deep->new( $ENV{"HOME"} . "/.dirmarks.db" );
+dbmopen(%mark_db, $ENV{"HOME"} . "/.mark.db", 0666);
+my $db   = \%mark_db;
 my $cmd  = shift @ARGV;
 my $args = join " ", @ARGV;
 
@@ -30,14 +26,14 @@ elsif ( $cmd eq "list" ) {
     }
 }
 elsif ( $cmd eq "get" ) {
-    if ( defined $args && $db->exists($args) ) {
+    if ( defined $args && defined $db->{$args} ) {
         print $db->{$args};
     }
     elsif ( length $args ) {
         foreach my $key ( keys %$db ) {
             if ( $key =~ /^$args/ ) {
                 print $db->{$key};
-                return;
+                exit 0;
             }
         }
     }
