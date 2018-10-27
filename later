@@ -1,0 +1,24 @@
+#!/bin/bash
+
+readonly title="Hej,"
+
+usage() {
+	cat 1>&2 << eof
+Usage:
+$0 <time> <message...>
+eof
+	exit 1
+}
+
+main() {
+	[[ $# -gt 1 ]] || usage
+	local time=$1; shift
+	local message="${*}"
+	local message_len=$(echo -n "${message}" | wc -c)
+	local popup_visible_for=$((${message_len}/40+3))
+	(sleep ${time} ; kdialog --title "${title}" --passivepopup \
+		"${message}" ${popup_visible_for}) &
+	disown
+}
+
+main "${@}"
